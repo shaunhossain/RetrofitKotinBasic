@@ -1,18 +1,19 @@
 package com.shaunhossain.retrofitkotlinbasic
 
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.shaunhossain.retrofitkotlinbasic.Constant.Companion.BASE_URL
+import com.shaunhossain.retrofitkotlinbasic.network.NetworkApi
+import com.shaunhossain.retrofitkotlinbasic.repos.Repository.Companion.getAllComments
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.await
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-const val BASE_URL = "http://jsonplaceholder.typicode.com/"
 class MainActivity : AppCompatActivity() {
 
     val TAG = "MainActivity"
@@ -20,14 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val api = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(NetworkApi::class.java)
-
         GlobalScope.launch(Dispatchers.IO){
 
-            val comments = api.getComments()
+            val comments = getAllComments()
             for (comment in comments.body()!!){
                 Log.d(TAG, comment.toString())
             }

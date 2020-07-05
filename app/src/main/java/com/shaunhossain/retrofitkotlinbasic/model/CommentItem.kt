@@ -1,4 +1,4 @@
-package com.shaunhossain.retrofitkotlinbasic
+package com.shaunhossain.retrofitkotlinbasic.model
 
 data class CommentItem(
     val body: String,
